@@ -1,0 +1,58 @@
+@reference "../../styles.css";
+
+/* Estilos específicos para o componente Header (shared/components) */
+
+.header-root {
+  @apply sticky top-0 z-40 border-b bg-background/80 backdrop-blur;
+}
+.header-inner {
+  @apply mx-auto max-w-6xl px-4 h-16 flex items-center justify-between gap-4;
+}
+
+/* --- Logo / Brand --- */
+.header-brand {
+  @apply flex items-center gap-2 font-semibold;
+}
+.header-brand-icon {
+  @apply inline-flex h-8 w-8 items-center justify-center rounded-lg text-primary-foreground;
+  background: var(--gradient-primary);
+}
+.header-brand-icon-svg {
+  @apply h-4 w-4;
+}
+
+/* --- Nav --- */
+.header-nav {
+  @apply flex items-center gap-1 text-sm;
+}
+
+/* Nav link base + variantes de estado (active / inactive) */
+.header-nav-link {
+  @apply px-3 py-2 rounded-md flex items-center gap-1.5 transition;
+}
+.header-nav-link--active {
+  @apply bg-muted text-foreground font-medium;
+}
+.header-nav-link--inactive {
+  @apply hover:bg-muted text-muted-foreground;
+}
+.header-nav-icon {
+  @apply h-4 w-4;
+}
+.header-nav-label {
+  @apply hidden sm:inline;
+}
+
+/* User menu separator */
+.header-user-menu {
+  @apply ml-1 pl-2 border-l;
+}
+
+/* --- Login button (unauthenticated state) --- */
+.header-login-btn {
+  @apply inline-flex items-center gap-1.5 rounded-md px-4 py-2 font-medium text-primary-foreground shadow-sm transition hover:opacity-90;
+  background: var(--gradient-primary);
+}
+.header-login-icon {
+  @apply h-4 w-4;
+}

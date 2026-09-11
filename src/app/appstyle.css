@@ -1,0 +1,33 @@
+@reference "../styles.css";
+
+.app-error-container {
+  @apply mx-auto max-w-lg px-4 py-16 flex flex-col items-center justify-center min-h-[50vh] text-center;
+}
+
+.app-error-icon-wrapper {
+  @apply mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/15;
+}
+
+.app-error-icon {
+  @apply h-8 w-8 text-destructive;
+}
+
+.app-error-title {
+  @apply text-xl font-bold tracking-tight;
+}
+
+.app-error-desc {
+  @apply text-sm text-muted-foreground mt-2 mb-6;
+}
+
+.app-loading-container {
+  @apply mx-auto max-w-6xl px-4 py-16 flex flex-col items-center justify-center min-h-[50vh];
+}
+
+.app-loading-icon {
+  @apply h-10 w-10 animate-spin text-primary mb-4;
+}
+
+.app-loading-text {
+  @apply text-sm font-medium text-muted-foreground;
+}
