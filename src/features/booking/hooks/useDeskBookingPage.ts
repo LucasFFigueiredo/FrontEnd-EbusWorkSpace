@@ -55,18 +55,11 @@ export function useDeskBookingPage(initialFloor: string) {
 
   const weekEnd = useMemo(() => addDays(weekStart, 4), [weekStart]);
 
-  const lastFetchKey = useRef<string>("");
-
   useEffect(() => {
     let isMounted = true;
 
     async function fetchAllOccupancies() {
       if (!floorId) return;
-
-      const fetchKey = `${floorId}-${weekStart.toISOString()}`;
-
-      if (lastFetchKey.current === fetchKey) return;
-      lastFetchKey.current = fetchKey;
 
       try {
         const weekData = await getWeekOccupancyAction(Number(floorId), weekStart.toISOString());
@@ -76,7 +69,6 @@ export function useDeskBookingPage(initialFloor: string) {
         }
       } catch (error) {
         console.error("Erro ao buscar a semana:", error);
-        lastFetchKey.current = "";
       }
     }
 

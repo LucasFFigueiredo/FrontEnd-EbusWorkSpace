@@ -208,11 +208,12 @@ export async function getWeekOccupancyAction(floorId: number, weekStartISO: stri
       const targetDate = new Date(weekStart);
       targetDate.setDate(targetDate.getDate() + (idx - 1));
 
+
       const startDate = new Date(targetDate);
-      startDate.setHours(8, 0, 0, 0);
+      startDate.setUTCHours(11, 0, 0, 0);
 
       const endDate = new Date(targetDate);
-      endDate.setHours(18, 0, 0, 0);
+      endDate.setUTCHours(21, 0, 0, 0);
 
       try {
         const data = await getFloorOccupancyAction(floorId, startDate.toISOString(), endDate.toISOString());

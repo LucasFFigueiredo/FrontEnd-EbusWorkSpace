@@ -42,7 +42,7 @@ export function LoginPage() {
 
           <div className="border-t pt-4 text-center space-y-2">
             <p className="text-xs text-muted-foreground">
-              Precisa de acesso ou ajudasuporte técnico?{" "}
+              Precisa de acesso ou suporte técnico?{" "}
               <a
                 href="mailto:lucas.figueiredo@jcatlm.com.br"
                 className="text-foreground font-semibold hover:text-primary transition-colors"

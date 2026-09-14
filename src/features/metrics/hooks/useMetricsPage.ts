@@ -101,7 +101,6 @@ export function useMetricsPage(initialParams: MetricsParams, usersList: any[]) {
     return `Até: ${fmt(endDate)}`;
   }, [startDate, endDate]);
 
-  // Lista única de Departamentos (Baseado na tabela Users do C#)
   const departments = useMemo(() => {
     const set = new Set<string>();
     usersList.forEach((u) => {
@@ -110,7 +109,6 @@ export function useMetricsPage(initialParams: MetricsParams, usersList: any[]) {
     return Array.from(set).sort();
   }, [usersList]);
 
-  // Filtra os usuários no dropdown se um departamento estiver selecionado
   const filteredUsers = useMemo(() => {
     if (selectedDept === "all") return usersList;
     return usersList.filter((u) => u.sector === selectedDept);
