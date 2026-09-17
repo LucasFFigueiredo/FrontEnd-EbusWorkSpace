@@ -3,6 +3,8 @@ import { serverFetch } from "@/core/services/serverApi";
 import { cookies } from "next/headers";
 import type { ReservationDto, SpaceDto } from "@/core/models/booking.types";
 
+export const dynamic = "force-dynamic";
+
 export type MappedBooking = ReservationDto & {
   spaceType: string;
   floorName: string;

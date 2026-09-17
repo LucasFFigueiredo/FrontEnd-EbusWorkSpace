@@ -1,6 +1,8 @@
 import { SpacesPage } from "@/features/spaces/pages/SpacesPage";
 import { serverFetch } from "@/core/services/serverApi";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const [allSpaces, upcomingBookings, pendingApprovals, extensionRequests] = await Promise.all([
     serverFetch<any[]>("/api/Spaces"),

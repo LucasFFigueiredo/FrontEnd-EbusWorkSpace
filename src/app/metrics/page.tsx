@@ -1,6 +1,8 @@
 import { MetricsPage } from "@/features/metrics/pages/MetricsPage";
 import { serverFetch } from "@/core/services/serverApi";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
@@ -31,7 +33,7 @@ export default async function Page({ searchParams }: Props) {
       userMetrics = await serverFetch<any>(
         `/api/Dashboard/user/${params.userId}?startDate=${startIso}&endDate=${endIso}`,
       );
-    } catch {}
+    } catch { }
   }
 
   return (

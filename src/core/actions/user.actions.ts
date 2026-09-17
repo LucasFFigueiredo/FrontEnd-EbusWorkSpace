@@ -8,7 +8,7 @@ import type { AccessType } from "@/core/models/user.types";
 function safeRevalidatePath(path: string) {
   try {
     revalidatePath(path);
-  } catch {}
+  } catch { }
 }
 
 export async function updateUserDepartmentAction(
@@ -26,7 +26,7 @@ export async function updateUserDepartmentAction(
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 30,
     });
 
     safeRevalidatePath("/profile");
