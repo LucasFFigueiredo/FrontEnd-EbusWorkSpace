@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useUser } from "@/core/services/user.service";
+import { getMaxBookingDate, toLocalISOString } from "@/core/utils/date.utils";
 import {
   useDeskBookingPage,
   WEEKDAYS,
@@ -146,7 +147,8 @@ export default function DeskBookingPage({ initialFloor, floors, desks }: DeskBoo
             <button
               type="button"
               onClick={() => setWeekStart((w) => addDays(w, 7))}
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              disabled={toLocalISOString(addDays(weekStart, 11)) > getMaxBookingDate()}
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
