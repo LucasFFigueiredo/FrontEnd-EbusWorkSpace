@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getUser, saveUser } from "@/core/services/user.service";
 import { updateUserDepartmentAction } from "@/core/actions/user.actions";
@@ -26,7 +25,6 @@ export const DEPARTMENTS = [
 ];
 
 export function useSelectDepartmentPage() {
-  const router = useRouter();
   const [userName, setUserName] = useState("");
   const [department, setDepartment] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,7 +52,7 @@ export function useSelectDepartmentPage() {
 
         saveUser({ ...user, department });
         toast.success("Perfil atualizado com sucesso!");
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (error) {
       toast.error("Erro ao atualizar o departamento.");

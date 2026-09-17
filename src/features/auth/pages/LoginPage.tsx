@@ -47,7 +47,7 @@ export function LoginPage() {
                 href="mailto:lucas.figueiredo@jcatlm.com.br"
                 className="text-foreground font-semibold hover:text-primary transition-colors"
               >
-                Fale com o suporte técnico
+                Fale com o suporte
               </a>
             </p>
           </div>
