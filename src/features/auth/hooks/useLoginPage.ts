@@ -18,7 +18,7 @@ export function useLoginPage() {
     if (!user.department || user.department.trim() === "") {
       router.push("/select-department");
     } else {
-      router.push("/");
+      window.location.href = "/";
     }
   }
 
@@ -28,6 +28,7 @@ export function useLoginPage() {
 
   function handleGoogleError(error: Error) {
     console.error("[useLoginPage] Erro no login Google:", error);
+    toast.error("Erro na comunicação com o Google.");
   }
 
   async function handleGoogleLogin() {
