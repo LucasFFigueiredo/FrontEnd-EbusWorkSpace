@@ -2,6 +2,8 @@ import RoomBookingPage from "@/features/booking/pages/RoomBookingPage";
 import { serverFetch } from "@/core/services/serverApi";
 import type { SpaceDto } from "@/core/models/booking.types";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };

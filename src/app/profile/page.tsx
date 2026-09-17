@@ -2,6 +2,8 @@ import { ProfilePage } from "@/features/auth/pages/ProfilePage";
 import { serverFetch } from "@/core/services/serverApi";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 interface ReservationDto {
   id: string;
   spaceId: string;
