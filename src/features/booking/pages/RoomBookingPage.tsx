@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useUser } from "@/core/services/user.service";
 import { useRoomBookingPage } from "../hooks/useRoomBookingPage";
+import { getMaxBookingDate } from "@/core/utils/date.utils";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
@@ -131,6 +132,7 @@ export default function RoomBookingPage({
                   type="date"
                   value={meetingDate}
                   min={new Date().toISOString().slice(0, 10)}
+                  max={getMaxBookingDate()}
                   onChange={(e) => {
                     setMeetingDate(e.target.value);
                     setResourceId("");
