@@ -27,11 +27,8 @@ export function Header() {
   return (
     <header className="header-root">
       <div className="header-inner">
-        <Link href="/" className="header-brand">
-          <span className="header-brand-icon">
-            <CalendarCheck className="header-brand-icon-svg" />
-          </span>
-          <span>E-bus WorkSpace</span>
+        <Link href="/" className="flex items-center gap-2">
+          <img src="/logo-ebus.svg" alt="E-bus WorkSpace" className="h-9 w-auto" />
         </Link>
 
         {}
