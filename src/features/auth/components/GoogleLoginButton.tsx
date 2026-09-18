@@ -25,7 +25,7 @@ export function GoogleLoginButton({
     <div className={`w-full flex flex-col items-center gap-2 ${className}`}>
       <div
         ref={buttonRef}
-        className="w-full flex justify-center min-h-[44px]"
+        className={`w-full flex justify-center ${!scriptLoaded ? "hidden" : "min-h-[44px]"}`}
         data-testid="google-button-container"
       />
 
@@ -34,7 +34,8 @@ export function GoogleLoginButton({
           type="button"
           disabled={loading}
           onClick={() => triggerGoogleLogin()}
-          className="w-full bg-card hover:bg-accent text-card-foreground font-medium py-5 text-base rounded-xl transition-colors border shadow-sm flex items-center justify-center gap-3"
+          className="h-[40px] px-4 bg-white hover:bg-gray-50 text-[#3c4043] font-[500] text-[14px] rounded-full transition-colors border border-[#dadce0] flex items-center justify-center gap-3 w-max"
+          style={{ fontFamily: "'Roboto', arial, sans-serif" }}
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path

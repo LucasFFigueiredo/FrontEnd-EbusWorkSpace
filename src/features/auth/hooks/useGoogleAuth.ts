@@ -125,7 +125,6 @@ export function useGoogleAuth(options: UseGoogleAuthOptions = {}) {
           text: "continue_with",
           shape: "pill",
           logo_alignment: "left",
-          width: "100%",
           locale: "pt-BR",
         });
       }
