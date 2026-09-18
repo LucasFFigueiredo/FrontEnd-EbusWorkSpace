@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, beforeAll, afterAll } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useSelectDepartmentPage, DEPARTMENTS } from "../useSelectDepartmentPage";
 import { saveUser } from "@/core/services/user.service";
@@ -20,9 +20,23 @@ vi.mock("@/core/actions/user.actions", () => ({
 }));
 
 describe("useSelectDepartmentPage (Hook Test)", () => {
+  let originalLocation: any;
+
+  beforeAll(() => {
+    originalLocation = window.location;
+    // @ts-ignore
+    delete window.location;
+    window.location = { ...originalLocation, href: "" } as any;
+  });
+
+  afterAll(() => {
+    window.location = originalLocation;
+  });
+
   beforeEach(() => {
     localStorage.clear();
     vi.clearAllMocks();
+    window.location.href = "";
   });
 
   it("deve exportar a lista de departamentos disponíveis", () => {
@@ -36,7 +50,6 @@ describe("useSelectDepartmentPage (Hook Test)", () => {
       email: "novo@empresa.com",
       department: "",
       access: "colaborador",
-      password: "123",
     });
 
     const { result } = renderHook(() => useSelectDepartmentPage());
@@ -55,7 +68,6 @@ describe("useSelectDepartmentPage (Hook Test)", () => {
       email: "novo@empresa.com",
       department: "",
       access: "colaborador",
-      password: "123",
     });
 
     const { result } = renderHook(() => useSelectDepartmentPage());
@@ -70,6 +82,6 @@ describe("useSelectDepartmentPage (Hook Test)", () => {
       await result.current.handleSubmit(mockEvent);
     });
 
-    expect(mockPush).toHaveBeenCalledWith("/");
+    expect(window.location.href).toBe("/");
   });
 });
