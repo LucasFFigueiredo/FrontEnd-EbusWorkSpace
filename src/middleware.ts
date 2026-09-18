@@ -29,8 +29,11 @@ export function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      const payloadBase64 = token.split(".")[1];
-      const decodedJson = Buffer.from(payloadBase64, "base64").toString("utf-8");
+      const payloadBase64Url = token.split(".")[1];
+
+      const base64 = payloadBase64Url.replace(/-/g, "+").replace(/_/g, "/");
+
+      const decodedJson = Buffer.from(base64, "base64").toString("utf-8");
       const decoded = JSON.parse(decodedJson);
 
       const hasSectorInToken = !!decoded.sector;

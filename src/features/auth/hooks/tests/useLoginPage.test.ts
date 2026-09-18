@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, beforeAll, afterAll } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useLoginPage } from "../useLoginPage";
 import type { UserProfile } from "@/core/models/user.types";
@@ -22,9 +22,23 @@ vi.mock("@/core/services/auth.service", () => ({
 }));
 
 describe("useLoginPage (Hook Test)", () => {
+  let originalLocation: any;
+
+  beforeAll(() => {
+    originalLocation = window.location;
+    // @ts-ignore
+    delete window.location;
+    window.location = { ...originalLocation, href: "" } as any;
+  });
+
+  afterAll(() => {
+    window.location = originalLocation;
+  });
+
   beforeEach(() => {
     localStorage.clear();
     vi.clearAllMocks();
+    window.location.href = "";
   });
 
   it("deve inicializar com loading false", () => {
@@ -48,8 +62,6 @@ describe("useLoginPage (Hook Test)", () => {
       email: "novo.usuario@empresa.com",
       department: "",
       access: "colaborador",
-      password: "",
-      mustChangePassword: false,
     };
 
     vi.mocked(authService.loginWithGoogle).mockResolvedValueOnce(mockGoogleUser);
@@ -71,8 +83,6 @@ describe("useLoginPage (Hook Test)", () => {
       email: "admin@empresa.com",
       department: "Administração",
       access: "admin",
-      password: "admin123",
-      mustChangePassword: false,
     };
 
     vi.mocked(authService.loginWithGoogle).mockResolvedValueOnce(mockGoogleUser);
@@ -83,7 +93,7 @@ describe("useLoginPage (Hook Test)", () => {
       await result.current.handleGoogleLogin();
     });
 
-    expect(mockPush).toHaveBeenCalledWith("/");
+    expect(window.location.href).toBe("/");
   });
 
   it("deve chamar handleGoogleSuccess e redirecionar conforme o departamento do usuário", () => {
@@ -92,8 +102,6 @@ describe("useLoginPage (Hook Test)", () => {
       email: "gestor@empresa.com",
       department: "Recursos Humanos",
       access: "gestor",
-      password: "",
-      mustChangePassword: false,
     };
 
     const { result } = renderHook(() => useLoginPage());
@@ -102,6 +110,6 @@ describe("useLoginPage (Hook Test)", () => {
       result.current.handleGoogleSuccess(mockUser);
     });
 
-    expect(mockPush).toHaveBeenCalledWith("/");
+    expect(window.location.href).toBe("/");
   });
 });

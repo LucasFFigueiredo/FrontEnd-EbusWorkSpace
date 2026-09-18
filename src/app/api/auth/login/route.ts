@@ -48,9 +48,9 @@ export async function POST(request: Request) {
     cookieStore.set("ebus_token", authData.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 30,
     });
 
     const apiUser: ApiUser = authData.user;
