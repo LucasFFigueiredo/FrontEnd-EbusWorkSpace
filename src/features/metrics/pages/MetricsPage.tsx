@@ -542,10 +542,10 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="p-4 sm:p-5 rounded-xl border bg-card shadow-xs flex flex-col">
-      <h3 className="font-bold text-sm sm:text-base">{title}</h3>
+    <section className="p-4 sm:p-5 rounded-xl border bg-card shadow-xs flex flex-col min-w-0">
+      <h3 className="font-bold text-sm sm:text-base truncate">{title}</h3>
       <p className="text-xs text-muted-foreground mb-3 sm:mb-4">{description}</p>
-      <div className="flex-1 flex flex-col justify-end w-full">{children}</div>
+      <div className="flex-1 flex flex-col justify-end w-full min-w-0">{children}</div>
     </section>
   );
 }

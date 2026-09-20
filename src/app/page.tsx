@@ -18,11 +18,19 @@ export type MappedBooking = ReservationDto & {
   spaceName: string;
 };
 
+export interface FloorAvailability {
+  floor: number;
+  totalDesks: number;
+  availableDesks: number;
+}
+
 export default async function Page() {
   const cookieStore = await cookies();
   const token = cookieStore.get("ebus_token")?.value;
 
   let todayBooking: MappedBooking | null = null;
+  let weeklyBookings: boolean[] = [false, false, false, false, false];
+  let floorAvailability: FloorAvailability[] = [];
 
   if (token) {
     try {
@@ -32,15 +40,17 @@ export default async function Page() {
       const decoded = JSON.parse(decodedJson);
       const userId = decoded.sub || decoded.nameid;
 
-      const [reservations, spaces] = await Promise.all([
+      const [userReservations, spaces, allReservations] = await Promise.all([
         serverFetch<ReservationDto[]>(`/api/Reservations/user/${userId}`),
         serverFetch<SpaceDto[]>("/api/Spaces"),
+        serverFetch<ReservationDto[]>("/api/Reservations"),
       ]);
 
-      const todayStr = toLocalISOString(new Date());
+      const now = new Date();
+      const todayStr = toLocalISOString(now);
 
-      const todayRes = reservations.find(
-        (r) => r.startTime.startsWith(todayStr) && r.status !== "Canceled"
+      const todayRes = userReservations.find(
+        (r) => r.startTime.startsWith(todayStr) && r.status !== "Canceled" && r.status !== "NoShow"
       );
 
       if (todayRes) {
@@ -52,10 +62,54 @@ export default async function Page() {
           spaceName: space?.name || "Espaço desconhecido",
         };
       }
+
+      const currentDayOfWeek = now.getDay();
+      const monday = new Date(now);
+      monday.setDate(now.getDate() - (currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1));
+
+      for (let i = 0; i < 5; i++) {
+        const targetDate = new Date(monday);
+        targetDate.setDate(monday.getDate() + i);
+        const dateStr = toLocalISOString(targetDate);
+
+        const hasBooking = userReservations.some(
+          (r) => r.startTime.startsWith(dateStr) && r.status !== "Canceled" && r.status !== "NoShow"
+        );
+        weeklyBookings[i] = hasBooking;
+      }
+
+      const deskSpaces = spaces.filter((s) => s.type === "Desk" && s.active !== false && !s.isBlocked);
+      const floors = Array.from(new Set(deskSpaces.map((s) => s.floor))).sort((a, b) => a - b);
+
+      const todayActiveReservations = allReservations.filter(
+        (r) => r.startTime.startsWith(todayStr) && r.status !== "Canceled" && r.status !== "NoShow"
+      );
+
+      floorAvailability = floors.map((floor) => {
+        const floorDesks = deskSpaces.filter((s) => s.floor === floor);
+        const totalDesks = floorDesks.length;
+        const floorDeskIds = new Set(floorDesks.map((s) => s.id));
+
+        const bookedDesksCount = todayActiveReservations.filter((r) => floorDeskIds.has(r.spaceId)).length;
+        const availableDesks = Math.max(0, totalDesks - bookedDesksCount);
+
+        return {
+          floor,
+          totalDesks,
+          availableDesks,
+        };
+      });
+
     } catch (error) {
-      console.error("[Home Page] Erro ao buscar reservas de hoje:", error);
+      console.error("[Home Page] Erro ao buscar dados do dashboard:", error);
     }
   }
 
-  return <HomePage todayBooking={todayBooking} />;
+  return (
+    <HomePage
+      todayBooking={todayBooking}
+      weeklyBookings={weeklyBookings}
+      floorAvailability={floorAvailability}
+    />
+  );
 }
