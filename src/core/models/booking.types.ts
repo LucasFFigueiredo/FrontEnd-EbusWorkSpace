@@ -5,6 +5,7 @@ export interface SpaceDto {
   type: SpaceType | string;
   floor: number;
   capacity: number;
+  active?: boolean;
   isBlocked: boolean;
   maintenanceReason?: string;
   resources?: string;
