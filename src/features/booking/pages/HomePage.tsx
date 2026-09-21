@@ -85,13 +85,20 @@ export function HomePage({ todayBooking, weeklyBookings, floorAvailability }: Ho
                     <Building2 className="h-5 w-5" />
                   </Link>
 
-                  <Link
-                    href="/scan"
-                    className="inline-flex items-center gap-2 rounded-xl bg-[#008A90] px-6 py-3 font-medium text-white shadow-sm transition hover:bg-[#007075]"
-                  >
-                    <QrCode className="h-4 w-4" />
-                    Fazer Check-in
-                  </Link>
+                  {todayBooking.status === "CheckedIn" ? (
+                    <div className="inline-flex items-center gap-2 rounded-xl bg-success/10 text-success px-6 py-3 font-medium border border-success/20">
+                      <CheckCircle2 className="h-4 w-4" />
+                      Check-in Realizado
+                    </div>
+                  ) : (
+                    <Link
+                      href="/scan"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#008A90] px-6 py-3 font-medium text-white shadow-sm transition hover:bg-[#007075]"
+                    >
+                      <QrCode className="h-4 w-4" />
+                      Fazer Check-in
+                    </Link>
+                  )}
                 </div>
               </div>
             ) : (
