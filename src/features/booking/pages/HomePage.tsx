@@ -265,7 +265,7 @@ function SupportFooter() {
           </h2>
 
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            O E-bus WorkSpace é uma iniciativa desenvolvida através do
+            O E-bus WorkSpace é uma iniciativa desenvolvida através do{" "}
             <strong>Projeto de Estágio</strong> e está em sua primeira fase de desenvolvimento. Sua opinião
             é fundamental para refinarmos o sistema e criarmos a melhor experiência!
           </p>
