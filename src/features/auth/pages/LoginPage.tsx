@@ -32,7 +32,7 @@ export function LoginPage() {
 
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
             Reserve mesas e salas de reunião de forma simples, rápida e organizada.
-            Pronto para começar? Utilize sua conta corporativa Google para entrar na plataforma.
+            Pronto para começar? Utilize sua conta corporativa Google para acessar na plataforma.
           </p>
         </div>
       </div>
@@ -46,7 +46,7 @@ export function LoginPage() {
               <span className="text-[#005c60]">E-bus WorkSpace</span>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Pronto para começar? Utilize sua conta corporativa Google para entrar na plataforma.
+              Pronto para começar? Utilize sua conta corporativa Google para acessar na plataforma.
             </p>
           </div>
 

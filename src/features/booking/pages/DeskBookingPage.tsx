@@ -161,8 +161,15 @@ export default function DeskBookingPage({ initialFloor, floors, desks }: DeskBoo
               const occList = occupancies[d.idx] || [];
 
               const totalDesks = desksForCurrentFloor.filter((desk) => !desk.isBlocked).length;
-              const occupiedCount = occList.filter((o: any) => o.isOccupied).length;
-              const availableCount = totalDesks - occupiedCount;
+              
+              const floorDeskIds = new Set(desksForCurrentFloor.map(d => d.id));
+              const occupiedDesksCount = new Set(
+                occList
+                  .filter((o: any) => o.isOccupied && floorDeskIds.has(o.spaceId))
+                  .map((o: any) => o.spaceId)
+              ).size;
+
+              const availableCount = totalDesks - occupiedDesksCount;
 
               let availColorClass = "text-success";
               if (isActive) availColorClass = "text-primary-foreground/90";

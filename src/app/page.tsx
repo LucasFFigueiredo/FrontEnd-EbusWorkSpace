@@ -81,17 +81,24 @@ export default async function Page() {
       const deskSpaces = spaces.filter((s) => s.type === "Desk" && s.active !== false && !s.isBlocked);
       const floors = Array.from(new Set(deskSpaces.map((s) => s.floor))).sort((a, b) => a - b);
 
-      const todayActiveReservations = allReservations.filter(
-        (r) => r.startTime.startsWith(todayStr) && r.status !== "Canceled" && r.status !== "NoShow"
-      );
+      const todayActiveDeskReservations = allReservations.filter((r) => {
+        if (!r.startTime.startsWith(todayStr) || r.status === "Canceled" || r.status === "NoShow") return false;
+        const space = spaces.find((s) => s.id === r.spaceId);
+        return space?.type === "Desk";
+      });
 
       floorAvailability = floors.map((floor) => {
         const floorDesks = deskSpaces.filter((s) => s.floor === floor);
         const totalDesks = floorDesks.length;
         const floorDeskIds = new Set(floorDesks.map((s) => s.id));
 
-        const bookedDesksCount = todayActiveReservations.filter((r) => floorDeskIds.has(r.spaceId)).length;
-        const availableDesks = Math.max(0, totalDesks - bookedDesksCount);
+        const bookedUniqueDesks = new Set(
+          todayActiveDeskReservations
+            .filter((r) => floorDeskIds.has(r.spaceId))
+            .map((r) => r.spaceId)
+        ).size;
+
+        const availableDesks = Math.max(0, totalDesks - bookedUniqueDesks);
 
         return {
           floor,
