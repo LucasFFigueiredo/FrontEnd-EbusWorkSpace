@@ -66,7 +66,7 @@ export function HomePage({ todayBooking, weeklyBookings, floorAvailability }: Ho
                       {todayBooking.spaceName}, {todayBooking.floorName}
                     </h2>
                     <span className="inline-block shrink-0 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary w-fit">
-                      Hoje, {todayBooking.startTime.split("T")[1].substring(0, 5)} - {todayBooking.endTime.split("T")[1].substring(0, 5)}
+                      Hoje, {new Date(todayBooking.startTime).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {new Date(todayBooking.endTime).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
 
