@@ -31,7 +31,7 @@ export function Header() {
           <img src="/logo-ebus.svg" alt="E-bus WorkSpace" className="h-9 w-auto" />
         </Link>
 
-        {}
+        { }
         <nav className="header-nav hidden! md:flex!">
           {isLoggedIn ? (
             <>
@@ -90,11 +90,7 @@ export function Header() {
             <div className="header-user-menu">
               <UserMenu />
             </div>
-          ) : (
-            <Link href="/login" className="header-login-btn">
-              <LogIn className="header-login-icon" /> Entrar
-            </Link>
-          )}
+          ) : null}
         </div>
       </div>
     </header>
