@@ -232,9 +232,18 @@ function DeskButton({
   return (
     <button
       type="button"
-      disabled={!isAvailable}
       title={title}
-      onClick={() => isAvailable && onSelect(desk.id)}
+      onClick={() => {
+        if (isAvailable) {
+          onSelect(desk.id);
+        } else {
+          import("sonner").then(({ toast }) => {
+            toast.info(title, {
+              description: "Esta mesa não pode ser selecionada.",
+            });
+          });
+        }
+      }}
       className={cn(
         "flex items-center justify-center rounded-md border font-medium transition-all shadow-sm",
         compact ? "text-[10px]" : "text-[11px] sm:text-xs",
