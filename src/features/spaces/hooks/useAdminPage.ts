@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useUser } from "@/core/services/user.service";
-import { updateUserRoleAction } from "@/core/actions/user.actions";
+import { approveAccessRequestAction, rejectAccessRequestAction } from "@/core/actions/user.actions";
 
 export function useAdminPage(initialRequests: any[]) {
   const user = useUser();
@@ -10,39 +10,17 @@ export function useAdminPage(initialRequests: any[]) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    try {
-      const archivedKeys = JSON.parse(localStorage.getItem("handled_requests") || "[]");
-      if (archivedKeys.length > 0) {
-        setRequests(
-          initialRequests.filter((r) => !archivedKeys.includes(`${r.userId}-${r.requestedAt}`)),
-        );
-      } else {
-        setRequests(initialRequests);
-      }
-    } catch (e) {
-      setRequests(initialRequests);
-    }
+    // The backend now only returns pending requests, no need for localStorage
+    setRequests(initialRequests);
   }, [initialRequests]);
 
-  const markAsHandled = (userId: string, requestedAt: string) => {
-    try {
-      const archivedKeys = JSON.parse(localStorage.getItem("handled_requests") || "[]");
-      const key = `${userId}-${requestedAt}`;
-      if (!archivedKeys.includes(key)) {
-        archivedKeys.push(key);
-        localStorage.setItem("handled_requests", JSON.stringify(archivedKeys));
-      }
-    } catch (e) {}
-  };
-
-  const handleApprove = async (userId: string, requestedRole: string, requestedAt: string) => {
+  const handleApprove = async (requestId: string, requestedRole: string) => {
     setIsSubmitting(true);
     try {
-      await updateUserRoleAction(userId, requestedRole);
+      await approveAccessRequestAction(requestId);
       toast.success(`Acesso de ${requestedRole} concedido com sucesso!`);
 
-      markAsHandled(userId, requestedAt);
-      setRequests((prev) => prev.filter((r) => r.userId !== userId));
+      setRequests((prev) => prev.filter((r) => r.requestId !== requestId));
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Erro ao aprovar solicitação.");
     } finally {
@@ -50,10 +28,17 @@ export function useAdminPage(initialRequests: any[]) {
     }
   };
 
-  const handleReject = (userId: string, requestedAt: string) => {
-    markAsHandled(userId, requestedAt);
-    setRequests((prev) => prev.filter((r) => r.userId !== userId));
-    toast.error("Solicitação rejeitada (arquivada).");
+  const handleReject = async (requestId: string) => {
+    setIsSubmitting(true);
+    try {
+      await rejectAccessRequestAction(requestId);
+      setRequests((prev) => prev.filter((r) => r.requestId !== requestId));
+      toast.success("Solicitação rejeitada com sucesso.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Erro ao rejeitar solicitação.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return {

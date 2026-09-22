@@ -43,8 +43,6 @@ export async function updateUserDepartmentAction(
 
 export async function requestAccessAction(
   role: AccessType,
-  email?: string,
-  name?: string,
 ): Promise<{ success: boolean }> {
   try {
     let requestedProfileId = 1;
@@ -52,11 +50,10 @@ export async function requestAccessAction(
     else if (role === "facilities") requestedProfileId = 3;
     else if (role === "admin") requestedProfileId = 4;
 
-    await serverFetch("/api/Users/request-access", {
+    await serverFetch("/api/requests", {
       method: "POST",
       body: JSON.stringify({
-        requestedProfile: requestedProfileId,
-        justification: `Solicitação feita pelo frontend. E-mail de contato: ${email}`,
+        RequestedProfile: requestedProfileId,
       }),
     });
 
@@ -74,44 +71,52 @@ export async function requestAccessAction(
   }
 }
 
-export async function updateUserRoleAction(
-  targetUserId: string,
-  requestedProfileName: string,
-): Promise<{ success: boolean }> {
+export async function getPendingAccessRequestsAction() {
   try {
-    let newProfileId = 1;
-    const normalized = requestedProfileName.toLowerCase();
+    const data = await serverFetch<any[]>("/api/requests/pending");
+    return (data || []).map((r) => ({
+      requestId: r.RequestId,
+      userId: r.UserId,
+      userName: r.UserName,
+      userEmail: r.UserEmail,
+      currentProfile: r.CurrentProfile,
+      requestedProfile: r.RequestedProfile,
+      requestedAt: r.RequestedAt,
+    }));
+  } catch (error) {
+    console.error("[ServerAction getPendingAccessRequestsAction] Erro:", error);
+    return [];
+  }
+}
 
-    if (normalized.includes("gestor") || normalized.includes("manager")) newProfileId = 2;
-    else if (normalized.includes("facilities")) newProfileId = 3;
-    else if (normalized.includes("admin")) newProfileId = 4;
-
-    await serverFetch(`/api/Users/${targetUserId}/role`, {
-      method: "PUT",
-      body: JSON.stringify({ newProfile: newProfileId }),
+export async function approveAccessRequestAction(requestId: string): Promise<{ success: boolean }> {
+  try {
+    await serverFetch(`/api/requests/${requestId}/approve`, {
+      method: "PATCH",
     });
 
     safeRevalidatePath("/admin");
     return { success: true };
   } catch (error) {
-    console.error("[ServerAction updateUserRoleAction] Erro:", error);
+    console.error("[ServerAction approveAccessRequestAction] Erro:", error);
     throw new Error(
-      error instanceof Error ? error.message : "Não foi possível atualizar o perfil do usuário.",
+      error instanceof Error ? error.message : "Não foi possível aprovar a solicitação.",
     );
   }
 }
 
-export async function approveAccessRequestAction(userId: string, approve: boolean) {
+export async function rejectAccessRequestAction(requestId: string): Promise<{ success: boolean }> {
   try {
-    await serverFetch(`/api/Users/${userId}/approve`, { method: "PATCH" });
+    await serverFetch(`/api/requests/${requestId}/reject`, {
+      method: "PATCH",
+    });
 
-    revalidatePath("/admin");
-
+    safeRevalidatePath("/admin");
     return { success: true };
   } catch (error) {
-    console.error("[ServerAction approveAccessRequestAction] Erro:", error);
+    console.error("[ServerAction rejectAccessRequestAction] Erro:", error);
     throw new Error(
-      error instanceof Error ? error.message : "Não foi possível processar a solicitação.",
+      error instanceof Error ? error.message : "Não foi possível rejeitar a solicitação.",
     );
   }
 }

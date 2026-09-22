@@ -65,7 +65,7 @@ export function AdminPage({ requests: initialRequests }: AdminPageProps) {
             {}
             {requests.map((request, index) => (
               <div
-                key={request.id || `${request.userId}-${index}`}
+                key={request.requestId || request.id || `${request.userId}-${index}`}
                 className="flex flex-col sm:flex-row gap-4 p-5 rounded-xl border bg-card transition-all hover:border-primary/20 card-shadow"
               >
                 {}
@@ -99,7 +99,7 @@ export function AdminPage({ requests: initialRequests }: AdminPageProps) {
                     disabled={isSubmitting}
 
                     onClick={() =>
-                      handleApprove(request.userId, request.requestedProfile, request.requestedAt)
+                      handleApprove(request.requestId, request.requestedProfile)
                     }
                   >
                     <Check className="h-4 w-4 mr-1.5" /> Aprovar
@@ -110,7 +110,7 @@ export function AdminPage({ requests: initialRequests }: AdminPageProps) {
                     size="sm"
                     disabled={isSubmitting}
 
-                    onClick={() => handleReject(request.userId, request.requestedAt)}
+                    onClick={() => handleReject(request.requestId)}
                   >
                     <X className="h-4 w-4 mr-1.5" /> Rejeitar
                   </Button>

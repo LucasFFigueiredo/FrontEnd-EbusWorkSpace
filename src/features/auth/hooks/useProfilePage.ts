@@ -57,7 +57,7 @@ export function useProfilePage(user: any, bookings: MappedProfileBooking[]) {
   async function handleRequestAccess() {
     setIsSubmitting(true);
     try {
-      await requestAccessAction(requestedRole as any, user.email, user.name);
+      await requestAccessAction(requestedRole as any);
       toast.success(`Solicitação de acesso enviada para análise!`);
       setRequestOpen(false);
     } catch (error) {
