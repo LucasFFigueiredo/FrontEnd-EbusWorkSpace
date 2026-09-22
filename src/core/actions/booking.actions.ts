@@ -148,6 +148,42 @@ export async function requestExtensionAction(
   }
 }
 
+export async function approveExtensionAction(extensionId: string): Promise<{ success: boolean }> {
+  try {
+    await serverFetch(`/api/Reservations/extension/${extensionId}/approve`, {
+      method: "PATCH",
+    });
+
+    safeRevalidatePath("/spaces");
+    safeRevalidatePath("/bookings");
+
+    return { success: true };
+  } catch (error) {
+    console.error("[ServerAction approveExtensionAction] Erro:", error);
+    throw new Error(
+      error instanceof Error ? error.message : "Erro ao aprovar extensão de tempo.",
+    );
+  }
+}
+
+export async function rejectExtensionAction(extensionId: string): Promise<{ success: boolean }> {
+  try {
+    await serverFetch(`/api/Reservations/extension/${extensionId}/reject`, {
+      method: "PATCH",
+    });
+
+    safeRevalidatePath("/spaces");
+    safeRevalidatePath("/bookings");
+
+    return { success: true };
+  } catch (error) {
+    console.error("[ServerAction rejectExtensionAction] Erro:", error);
+    throw new Error(
+      error instanceof Error ? error.message : "Erro ao rejeitar extensão de tempo.",
+    );
+  }
+}
+
 export async function getFloorOccupancyAction(floor: number, startTime: string, endTime: string) {
   try {
     const occupancy = await serverFetch<any[]>(

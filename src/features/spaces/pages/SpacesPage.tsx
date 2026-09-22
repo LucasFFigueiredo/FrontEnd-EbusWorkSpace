@@ -84,6 +84,8 @@ export function SpacesPage({
     handleApproveVip,
     handleRejectVip,
     confirmRejectVip,
+    handleApproveExtension,
+    handleRejectExtension,
   } = useSpacesPage(rooms, upcomingBookings, pendingApprovals, extensionRequests);
 
   if (!isAllowed) {
@@ -132,7 +134,7 @@ export function SpacesPage({
             <ul className="grid gap-3 sm:grid-cols-2">
               {filteredExtensions.map((req: any, index: number) => (
                 <li
-                  key={`${req.reservationId}-${index}`}
+                  key={req.id || `${req.reservationId}-${index}`}
                   className="flex flex-col justify-between rounded-lg border bg-card p-4 shadow-sm"
                 >
                   <div>
@@ -157,14 +159,14 @@ export function SpacesPage({
                       variant="outline"
                       size="sm"
                       className="text-destructive hover:bg-destructive/10"
-                      onClick={() => handleRejectVip(req.reservationId, "Recusado por Facilities")}
+                      onClick={() => handleRejectExtension(req.id)}
                     >
                       <X className="h-4 w-4 mr-1" /> Negar
                     </Button>
                     <Button
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                      onClick={() => handleApproveVip(req.reservationId)}
+                      onClick={() => handleApproveExtension(req.id)}
                     >
                       <Check className="h-4 w-4 mr-1" /> Aprovar
                     </Button>
