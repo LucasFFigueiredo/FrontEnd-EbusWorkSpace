@@ -6,22 +6,17 @@ import { getUser, saveUser } from "@/core/services/user.service";
 import { updateUserDepartmentAction } from "@/core/actions/user.actions";
 
 export const DEPARTMENTS = [
-  "Administração",
-  "Agilistas",
-  "BI - Data",
-  "Clube Giro",
-  "Engenharia",
-  "Facilities",
-  "Financeiro",
-  "Gestão",
-  "Growth",
-  "Marketing",
-  "Operações",
-  "Performance",
-  "Produto",
-  "Quality Assurance",
-  "RH",
-  "WeMobi",
+  "ODPTech: Build & data",
+  "ODPTech: Product studio & ops",
+  "ODPTech: Performance studio",
+  "ODPTech: VSM",
+  "Marketing Corporativo: Facilities",
+  "Marketing Corporativo: Marketing",
+  "Marketing Corporativo: CX",
+  "Marketing Corporativo: CS",
+  "Planejamento Estratégico: Projetos",
+  "Planejamento Estratégico: Financeiro",
+  "Outros departamentos",
 ];
 
 export function useSelectDepartmentPage() {
