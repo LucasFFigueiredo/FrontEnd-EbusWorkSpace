@@ -32,35 +32,43 @@ export function useSpacesPage(
   const [rejectVipReason, setRejectVipReason] = useState("");
 
   // ============================================================================
-  // LÓGICA DE MEMÓRIA (LOCALSTORAGE) PARA ESCONDER APROVAÇÕES
+  // ESTADO LOCAL PARA ESCONDER APROVAÇÕES/EXTENSÕES DA TELA INSTANTANEAMENTE
   // ============================================================================
   const [handledApprovals, setHandledApprovals] = useState<string[]>([]);
 
-  useEffect(() => {
-    try {
-      const archivedKeys = JSON.parse(localStorage.getItem("handled_extensions") || "[]");
-      setHandledApprovals(archivedKeys);
-    } catch (e) {}
-  }, []);
-
-  const markAsHandled = (reservationId: string) => {
-    try {
-      const archivedKeys = JSON.parse(localStorage.getItem("handled_extensions") || "[]");
-      if (!archivedKeys.includes(reservationId)) {
-        archivedKeys.push(reservationId);
-        localStorage.setItem("handled_extensions", JSON.stringify(archivedKeys));
-        setHandledApprovals([...archivedKeys]);
-      }
-    } catch (e) {}
+  const markAsHandled = (id: string) => {
+    setHandledApprovals((prev) => [...prev, id]);
   };
 
   const filteredExtensions = useMemo(() => {
-    return extensionRequests.filter((req) => !handledApprovals.includes(req.reservationId));
+    return extensionRequests.filter((req) => !handledApprovals.includes(req.id));
   }, [extensionRequests, handledApprovals]);
 
   const filteredApprovals = useMemo(() => {
     return pendingApprovals.filter((req) => !handledApprovals.includes(req.id));
   }, [pendingApprovals, handledApprovals]);
+
+  async function handleApproveExtension(extensionId: string) {
+    try {
+      const { approveExtensionAction } = await import("@/core/actions/booking.actions");
+      await approveExtensionAction(extensionId);
+      toast.success("Tempo extra aprovado com sucesso!");
+      markAsHandled(extensionId);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erro ao aprovar tempo extra.");
+    }
+  }
+
+  async function handleRejectExtension(extensionId: string) {
+    try {
+      const { rejectExtensionAction } = await import("@/core/actions/booking.actions");
+      await rejectExtensionAction(extensionId);
+      toast.success("Tempo extra recusado.");
+      markAsHandled(extensionId);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erro ao recusar tempo extra.");
+    }
+  }
 
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -242,5 +250,7 @@ export function useSpacesPage(
     handleApproveVip,
     handleRejectVip,
     confirmRejectVip,
+    handleApproveExtension,
+    handleRejectExtension,
   };
 }
