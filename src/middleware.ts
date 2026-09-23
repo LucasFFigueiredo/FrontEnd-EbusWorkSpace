@@ -30,23 +30,9 @@ export function middleware(request: NextRequest) {
   if (token) {
     try {
       const payloadBase64Url = token.split(".")[1];
-
       const base64 = payloadBase64Url.replace(/-/g, "+").replace(/_/g, "/");
-
       const decodedJson = Buffer.from(base64, "base64").toString("utf-8");
-      const decoded = JSON.parse(decodedJson);
-
-      const hasSectorInToken = !!decoded.sector;
-      const hasSectorUpdatedCookie = request.cookies.has("ebus_sector_updated");
-      const hasSector = hasSectorInToken || hasSectorUpdatedCookie;
-
-      if (!hasSector && pathname !== "/select-department" && !pathname.startsWith("/api/")) {
-        return NextResponse.redirect(new URL("/select-department", request.url));
-      }
-
-      if (hasSector && pathname === "/select-department") {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
+      JSON.parse(decodedJson); // Just validate it's JSON
     } catch (error) {
       console.error("[Middleware] Erro ao decodificar JWT:", error);
 
@@ -56,7 +42,13 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  if (request.cookies.has("ebus_sector_updated")) {
+    response.cookies.delete("ebus_sector_updated");
+  }
+
+  return response;
 }
 
 export const config = {

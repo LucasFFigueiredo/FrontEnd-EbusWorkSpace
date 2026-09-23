@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { serverFetch } from "@/core/services/serverApi";
 import type { AccessType } from "@/core/models/user.types";
 
@@ -18,15 +17,6 @@ export async function updateUserDepartmentAction(
     await serverFetch("/api/Users/sector", {
       method: "PATCH",
       body: JSON.stringify({ sector: department }),
-    });
-
-    const cookieStore = await cookies();
-    cookieStore.set("ebus_sector_updated", "true", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30,
     });
 
     safeRevalidatePath("/profile");
