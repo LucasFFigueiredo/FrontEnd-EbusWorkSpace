@@ -31,8 +31,7 @@ export async function serverFetch<T>(
   });
 
   if (response.status === 401) {
-    cookieStore.delete("ebus_token");
-    redirect("/login");
+    redirect("/api/auth/clearsession");
   }
 
   if (response.status === 204) {
