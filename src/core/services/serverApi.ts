@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation"; // 👈 Importação adicionada
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5281";
 
-interface ServerFetchOptions extends RequestInit {}
+interface ServerFetchOptions extends RequestInit { }
 
 export async function serverFetch<T>(
   endpoint: string,
@@ -29,6 +30,12 @@ export async function serverFetch<T>(
     headers,
   });
 
+  // 👇 NOVA REGRA: Intercepta o 401 (Acesso Negado/Token Expirado)
+  if (response.status === 401) {
+    cookieStore.delete("ebus_token");
+    redirect("/login");
+  }
+
   if (response.status === 204) {
     return {} as T;
   }
@@ -48,7 +55,7 @@ export async function serverFetch<T>(
           finalErrorMessage = rawText;
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     throw new Error(finalErrorMessage);
   }
