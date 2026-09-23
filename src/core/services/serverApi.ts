@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation"; // 👈 Importação adicionada
+import { redirect } from "next/navigation";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5281";
 
@@ -30,7 +30,6 @@ export async function serverFetch<T>(
     headers,
   });
 
-  // 👇 NOVA REGRA: Intercepta o 401 (Acesso Negado/Token Expirado)
   if (response.status === 401) {
     cookieStore.delete("ebus_token");
     redirect("/login");
