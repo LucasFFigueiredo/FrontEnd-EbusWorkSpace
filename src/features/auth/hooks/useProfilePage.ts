@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import { updateUserDepartmentAction, requestAccessAction } from "@/core/actions/user.actions";
+import { getUser } from "@/core/services/user.service";
 import type { MappedProfileBooking } from "@/app/profile/page";
 
 export function fmtDateTime(iso: string) {
@@ -13,7 +14,16 @@ export function fmtDateTime(iso: string) {
 
 export function useProfilePage(user: any, bookings: MappedProfileBooking[]) {
   const [name, setName] = useState(user.name);
-  const [department, setDepartment] = useState(user.sector);
+  const [department, setDepartment] = useState(user.sector || "");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localUser = getUser();
+      if (localUser && localUser.department && localUser.department !== department) {
+        setDepartment(localUser.department);
+      }
+    }
+  }, []);
 
   const [requestOpen, setRequestOpen] = useState(false);
   const [requestedRole, setRequestedRole] = useState("gestor");

@@ -6,9 +6,9 @@ import { getUser, saveUser } from "@/core/services/user.service";
 import { updateUserDepartmentAction } from "@/core/actions/user.actions";
 
 export const DEPARTMENTS = [
-  "ODPTech: Build & data",
-  "ODPTech: Product studio & ops",
-  "ODPTech: Performance studio",
+  "ODPTech: Build & Data",
+  "ODPTech: Product Studio & Ops",
+  "ODPTech: Performance Studio",
   "ODPTech: VSM",
   "Marketing Corporativo: Facilities",
   "Marketing Corporativo: Marketing",

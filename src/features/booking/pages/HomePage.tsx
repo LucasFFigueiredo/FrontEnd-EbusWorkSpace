@@ -234,12 +234,12 @@ function AvailabilityCard({ floorAvailability = [] }: { floorAvailability?: Floo
 
 function NoticeBoard() {
   const notices = [
-    "Lembre-se: Deixe a mesa limpa e organizada após o uso para o próximo colega.",
+    "Deixe a mesa limpa e organizada após o uso para o próximo colega.",
     "Ao sair da sala de reunião, não se esqueça de apagar as luzes.",
     "Faça seu check-in via QR Code ao chegar no espaço para confirmar sua presença.",
-    "Atenção: Reservas sem check-in são marcadas como no-show e canceladas automaticamente.",
-    "Lembre-se: Salas executivas exigem aprovação prévia. Planeje-se e reserve com antecedência!",
-    "Encontrou algum problema na sua sala? Avise a equipe de Facilities para que o espaço seja bloqueado para manutenção.",
+    "Reservas sem check-in são marcadas como no-show e canceladas automaticamente.",
+    "Salas Executivas exigem aprovação prévia. Planeje-se e reserve com antecedência!",
+    "Encontrou algum problema na sua sala? Entre em contato com a equipe de Facilities.",
   ];
 
   const todayNotice = notices[new Date().getDate() % notices.length];
@@ -296,7 +296,7 @@ function SupportFooter() {
           <div className="flex items-center">
             <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/50">
               <Code2 className="h-3.5 w-3.5" />
-              Versão 1.0.0 (MVP)
+              Versão 1.0.7 (MVP)
             </span>
           </div>
         </div>

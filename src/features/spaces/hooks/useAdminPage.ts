@@ -10,7 +10,6 @@ export function useAdminPage(initialRequests: any[]) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // The backend now only returns pending requests, no need for localStorage
     setRequests(initialRequests);
   }, [initialRequests]);
 

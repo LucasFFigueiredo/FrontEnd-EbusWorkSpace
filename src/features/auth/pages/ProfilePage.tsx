@@ -84,8 +84,8 @@ export function ProfilePage({ user, bookings }: ProfilePageProps) {
       </header>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-        {}
-        {}
+        { }
+        { }
         <form
           onSubmit={handleSave}
           className="rounded-xl border bg-card p-6 grid gap-4 card-shadow h-fit self-start"
@@ -107,13 +107,20 @@ export function ProfilePage({ user, bookings }: ProfilePageProps) {
               id="dept"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              placeholder="Ex: Engenharia"
+              placeholder="Ex: ODPTech: Build & Data"
               disabled
             />
           </div>
 
           <div className="mt-4 flex flex-col gap-3">
             <div className="flex flex-wrap gap-2">
+              {!department && (
+                <Button asChild variant="default">
+                  <Link href="/select-department">
+                    <Building2 className="h-4 w-4 mr-1.5" /> Escolher Departamento
+                  </Link>
+                </Button>
+              )}
               {!isAdmin ? (
                 <Button type="button" variant="outline" onClick={() => setRequestOpen(true)}>
                   <ShieldAlert className="h-4 w-4 mr-1.5" /> Solicitar Acesso
@@ -144,9 +151,9 @@ export function ProfilePage({ user, bookings }: ProfilePageProps) {
           </div>
         </form>
 
-        {}
+        { }
         <div className="space-y-6">
-          {}
+          { }
           <section className="rounded-xl border bg-card p-6 card-shadow">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold flex items-center gap-2">
@@ -186,7 +193,7 @@ export function ProfilePage({ user, bookings }: ProfilePageProps) {
             )}
           </section>
 
-          {}
+          { }
           <section className="rounded-xl border bg-card p-6 card-shadow">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold flex items-center gap-2">
@@ -223,7 +230,7 @@ export function ProfilePage({ user, bookings }: ProfilePageProps) {
         </div>
       </div>
 
-      {}
+      { }
       <Dialog open={requestOpen} onOpenChange={setRequestOpen}>
         <DialogContent>
           <DialogHeader>
