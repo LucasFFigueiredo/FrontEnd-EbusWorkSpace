@@ -104,7 +104,7 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 - **Git** — para clonar o repositório
 - **Docker** _(opcional)_ — para rodar via container
 
-> 💡 **Dica:** Verifique suas versões com:
+>  **Dica:** Verifique suas versões com:
 > ```bash
 > node -v
 > npm -v
