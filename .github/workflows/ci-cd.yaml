@@ -2,9 +2,9 @@ name: Front-End CI/CD Pipeline
 
 on:
   push:
-    branches: ["development"]
+    branches: ["master"]
   pull_request:
-    branches: ["development"]
+    branches: ["master"]
 
 jobs:
   test:
@@ -16,11 +16,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24" # Ou a versão que você esteja utilizando
+          node-version: "24"
       - name: Install dependencies
         run: npm ci
       - name: Run test coverage
-        run: npm run test:coverage # Certifique-se que o script no package.json está configurado
+        run: npm run test:coverage
 
   sast:
     name: SAST
