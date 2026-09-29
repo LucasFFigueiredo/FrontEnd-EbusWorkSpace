@@ -41,7 +41,7 @@ describe("useSelectDepartmentPage (Hook Test)", () => {
 
   it("deve exportar a lista de departamentos disponíveis", () => {
     expect(DEPARTMENTS.length).toBeGreaterThan(0);
-    expect(DEPARTMENTS).toContain("Engenharia");
+    expect(DEPARTMENTS).toContain("ODPTech: Build & Data");
   });
 
   it("deve exibir erro se tentar enviar formulário sem selecionar departamento", () => {
@@ -73,7 +73,7 @@ describe("useSelectDepartmentPage (Hook Test)", () => {
     const { result } = renderHook(() => useSelectDepartmentPage());
 
     act(() => {
-      result.current.setDepartment("Engenharia");
+      result.current.setDepartment("ODPTech: Build & Data");
     });
 
     const mockEvent = { preventDefault: vi.fn() } as unknown as React.FormEvent;
